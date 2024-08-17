@@ -20,7 +20,6 @@ class FilterService:
 
     def get_filtered_operable_components(self, voltage, temp):
         """Return all opeable components in a specific voltage and temperature value."""
-
         operable_components = [
             component for component in self.components 
             if component.can_operate(condition=(voltage, temp))
