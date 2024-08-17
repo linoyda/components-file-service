@@ -1,22 +1,33 @@
-from services.service import SearchService
+import sys
+from services.service import FilterService
 from parsers.parser import TextToComponentParser
 from loaders.loader import TextFileLoader
-from services.component import Component
 import pathlib
 
 def main(archive_filename):
     """Driver function"""
-
     try:
-        archive_path = pathlib.Path(__file__).parent.resolve().joinpath(archive_filename)
-    except FileNotFoundError:
-        print("archive path was not found")
+        try:
+            archive_dir = pathlib.Path(__file__).parent.resolve()
+            archive_path = archive_dir.joinpath(archive_filename)
+            extract_dir = archive_dir.joinpath("extracted")
+        except FileNotFoundError:
+            sys.exit("Archive file not found")
 
-    loader = TextFileLoader(archive_path)
-    parser = TextToComponentParser()
-    service = SearchService()
+        # Call the loader to create a mapping between filename and its content.
+        loader = TextFileLoader(str(archive_path), str(extract_dir))
+        content_dict = loader.load_data()
 
-    # Call the loader to create a mapping between filename and its content.
+        if not content_dict:
+            sys.exit("Failed to load content")
+        
+        # Pass the content dictionary to the parser, to create a list of Components.
+        parser = TextToComponentParser(content_dict)
+        service = FilterService(parser.parse_data())
+
+        return service.serve_client(filter=(5,-20))
+    except:
+        sys.exit("FATAL error occured")
 
 
 
