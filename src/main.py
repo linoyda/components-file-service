@@ -4,7 +4,7 @@ from parsers.parser import TextToComponentParser
 from loaders.loader import TextFileLoader
 import pathlib
 
-def main(archive_filename):
+def main(archive_filename, filter):
     """Driver function"""
     try:
         try:
@@ -21,15 +21,15 @@ def main(archive_filename):
         if not content_dict:
             sys.exit("Failed to load content")
         
-        # Pass the content dictionary to the parser, to create a list of Components.
+        # Pass the content dictionary to the parser, to create a list of Components. 
         parser = TextToComponentParser(content_dict)
-        service = FilterService(parser.parse_data())
 
-        return service.serve_client(filter=(5,-20))
+        # Pass the list of components to the filter service and result the 
+        service = FilterService(parser.parse_data())
+        return service.serve_client(filter)
     except:
         sys.exit("FATAL error occured")
 
 
-
 if __name__ == "__main__":
-    main(archive_filename="Task example files.7z")
+    main(archive_filename="Task example files.7z", filter=(5,-20))

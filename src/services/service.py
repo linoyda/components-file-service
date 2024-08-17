@@ -1,6 +1,4 @@
 from typing import List
-from loaders.loader import ILoader
-from parsers.parser import IParser
 from services.component import IComponent
 from abc import ABC, abstractmethod
 
