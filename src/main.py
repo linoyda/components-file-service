@@ -28,7 +28,7 @@ def main(archive_filename, filter):
         service = FilterService(parser.parse_data())
         return service.serve_client(filter)
     except:
-        sys.exit("FATAL error occured")
+        sys.exit("FATAL error occured")  # To not be reached, only for extreme cases
 
 
 if __name__ == "__main__":

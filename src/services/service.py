@@ -16,12 +16,12 @@ class FilterService:
         """The filter in our case is in a format of (int voltage, int temp)."""
         if type(filter) is not tuple:
             return None
-        return self.get_filtered_operable_components(filter[0], filter[1])
+        return self.get_filtered_operable_components(filter)
 
-    def get_filtered_operable_components(self, voltage, temp):
+    def get_filtered_operable_components(self, filter):
         """Return all opeable components in a specific voltage and temperature value."""
         operable_components = [
             component for component in self.components 
-            if component.can_operate(condition=(voltage, temp))
+            if component.can_operate(condition=filter)
         ]
         return operable_components

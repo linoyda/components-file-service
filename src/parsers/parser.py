@@ -26,16 +26,19 @@ class TextToComponentParser(IParser):
         components = []
 
         for file_name, content in self.file_content_dict.items():
-            if not file_name or not content:
-                continue
-            
-            # filter subgroups
-            voltage_matches = [(match[0], match[2]) for match in re.findall(self.VOLTAGE_REGEX, content)]
-            temp_matches = [(match[0], match[2]) for match in re.findall(self.TEMP_REGEX, content)]
-            
-            voltage_range = self.__check_consistency(voltage_matches)
-            temp_range = self.__check_consistency(temp_matches)
+            try:
+                if not file_name or not content:
+                    continue
+                
+                # filter subgroups
+                voltage_matches = [(match[0], match[2]) for match in re.findall(self.VOLTAGE_REGEX, content)]
+                temp_matches = [(match[0], match[2]) for match in re.findall(self.TEMP_REGEX, content)]
+                
+                voltage_range = self.__check_consistency(voltage_matches)
+                temp_range = self.__check_consistency(temp_matches)
 
-            components.append(ElectricComponent(file_name, voltage_range, temp_range))
+                components.append(ElectricComponent(file_name, voltage_range, temp_range))
+            except:
+                print("failed parsing content from file: " + file_name)
         
         return components
